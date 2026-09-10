@@ -1,0 +1,10 @@
+{
+  "name": "armstrong-interviews",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo 'Building site...'"
+  },
+  "dependencies": {
+    "@netlify/functions": "^2.0.0"
+  }
+}
