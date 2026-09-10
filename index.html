@@ -45,7 +45,12 @@
       <div class="card lead-card">
         <h3 style="margin-top:0;">⚡ Free Cycle Alerts</h3>
         <p style="font-size: 0.9em; line-height: 1.4;">Get new Martin Armstrong interview updates & Economic Confidence Model summaries sent straight to your inbox.</p>
-        <form class="lead-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
+        <!-- AFTER -->
+<form class="lead-form" name="cycle-alerts" method="POST" data-netlify="true">
+  <input type="hidden" name="form-name" value="cycle-alerts" />
+  <input type="email" name="email" placeholder="Enter your email" required />
+  <button type="submit" class="btn-submit">Subscribe Free</button>
+</form>
           <input type="email" placeholder="Enter your email" required />
           <button type="submit" class="btn-submit">Subscribe Free</button>
         </form>
