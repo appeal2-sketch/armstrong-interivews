@@ -26,7 +26,7 @@
     .official-links { list-style: none; padding: 0; margin: 0; }
     .official-links li { margin-bottom: 10px; }
     .official-links a { color: #0284c7; text-decoration: none; font-weight: 600; }
-    .book-container { width: 100%; text-align: center; background: #0a192f; padding: 20px; border-radius: 6px; color: white; margin-bottom: 12px; }
+    .book-img { width: 100%; height: auto; border-radius: 6px; margin-bottom: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.15); display: block; }
     .video-card { margin-bottom: 25px; }
     .video-card h2 { margin-top: 0; font-size: 1.35rem; }
     .meta-info { color: #64748b; font-size: 0.85rem; margin-bottom: 12px; }
@@ -68,12 +68,11 @@
         </form>
       </div>
 
-      <!-- STYLED BOOK BOX -->
+      <!-- BOOK CARD WITH LOCAL FILE FALLBACK -->
       <div class="card">
-        <div class="book-container">
-          <h2 style="margin:0; font-size:1.2rem; color:#d4af37;">THE ARMSTRONG ECONOMIC CODE</h2>
-          <p style="font-size:0.8rem; margin:5px 0 0 0; color:#cbd5e1;">By Martin Armstrong & Kerry Lutz</p>
-        </div>
+        <a href="https://armstrongbook.com" target="_blank">
+          <img src="/cover.jpg" alt="The Armstrong Economic Code" class="book-img" onerror="this.onerror=null; this.src='https://armstrongbook.com/cover.png';">
+        </a>
         <h3 style="margin-top:0;">The Armstrong Economic Code</h3>
         <p style="font-size:0.9em; color:#475569; line-height:1.4;">Martin Armstrong's cycles, decoded by Kerry Lutz. The theory behind these interviews explained.</p>
         <a href="https://armstrongbook.com" target="_blank" class="btn-book">Get the Book →</a>
@@ -98,7 +97,7 @@
         const data = await res.json();
         
         if (data.error) {
-          container.innerHTML = `<div class="card"><p><strong>API Config Notice:</strong> ${data.error}</p></div>`;
+          container.innerHTML = `<div class="card"><p><strong>Notice:</strong> ${data.error}</p></div>`;
           return;
         }
 
@@ -121,125 +120,6 @@
         `).join('');
       } catch (err) {
         container.innerHTML = `<div class="card"><p>Unable to load interviews. Error details: ${err.message}</p></div>`;
-      }
-    }
-    loadInterviews();
-  </script>
-</body>
-</html>      </div>
-
-      <div class="card">
-        <h3 style="margin-top:0;">Official Resources</h3>
-        <ul class="official-links">
-          <li>🌐 <a href="https://www.armstrongeconomics.com" target="_blank">Armstrong Economics</a></li>
-          <li>💻 <a href="https://ask-socrates.com" target="_blank">Socrates Market Platform</a></li>
-          <li>🎙️ <a href="https://financialsurvivalnetwork.com" target="_blank">Financial Survival Network</a></li>
-        </ul>
-      </div>
-    </aside>
-  </div>
-
-  <script>
-    async function loadInterviews() {
-      const container = document.getElementById('interview-grid');
-      try {
-        const res = await fetch('/.netlify/functions/get-interviews');
-        const data = await res.json();
-        
-        if (!data || data.length === 0) {
-          container.innerHTML = '<div class="card"><p>No interviews indexed yet.</p></div>';
-          return;
-        }
-
-        container.innerHTML = data.map(item => `
-          <div class="card video-card">
-            <h2>${item.title}</h2>
-            <div class="meta-info">Hosted by <strong>${item.host}</strong> • Published ${item.date}</div>
-            
-            <!-- YOUTUBE VIDEO EMBED -->
-            <div class="video-container">
-              <iframe src="https://www.youtube.com/embed/${item.id}" allowfullscreen></iframe>
-            </div>
-
-            <ul>
-              ${item.summary.map(point => `<li>${point}</li>`).join('')}
-            </ul>
-          </div>
-        `).join('');
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    loadInterviews();
-  </script>
-</body>
-</html>    <main class="main-content" id="interview-grid">
-      <div class="card"><p>Loading interview archive...</p></div>
-    </main>
-
-    <!-- RIGHT COLUMN: SIDEBAR -->
-    <aside class="sidebar">
-      
-      <!-- NETLIFY NATIVE LEAD CAPTURE FORM -->
-      <div class="card lead-card">
-        <h3>⚡ Free Cycle Alerts</h3>
-        <p>Get new Martin Armstrong interview summaries & Economic Confidence Model updates sent straight to your inbox.</p>
-        
-        <form class="lead-form" name="cycle-alerts" method="POST" data-netlify="true">
-          <input type="hidden" name="form-name" value="cycle-alerts" />
-          <input type="email" name="email" placeholder="Enter your email address" required />
-          <button type="submit" class="btn-submit">Subscribe Free</button>
-        </form>
-      </div>
-
-      <!-- BOOK CARD WITH COVER -->
-      <div class="card">
-        <img src="https://armstrongbook.com/assets/cover.jpg" alt="The Armstrong Economic Code" class="book-img" onerror="this.src='https://via.placeholder.com/300x400?text=Armstrong+Economic+Code'">
-        <h3 style="margin-top:0;">The Armstrong Economic Code</h3>
-        <p style="font-size:0.9em; color:#475569; line-height:1.4;">Martin Armstrong's cycles, decoded. Co-authored by Kerry Lutz — the book behind the theory these interviews explain.</p>
-        <a href="https://armstrongbook.com" target="_blank" class="btn-book">Get the Book →</a>
-      </div>
-
-      <!-- OFFICIAL LINKS CARD -->
-      <div class="card">
-        <h3 style="margin-top:0;">Official Resources</h3>
-        <ul class="official-links">
-          <li>🌐 <a href="https://www.armstrongeconomics.com" target="_blank">Armstrong Economics</a></li>
-          <li>💻 <a href="https://ask-socrates.com" target="_blank">Socrates Market Platform</a></li>
-          <li>🎙️ <a href="https://financialsurvivalnetwork.com" target="_blank">Financial Survival Network</a></li>
-        </ul>
-      </div>
-
-    </aside>
-
-  </div>
-
-  <!-- DYNAMIC DATA FETCHING SCRIPT -->
-  <script>
-    async function loadInterviews() {
-      const container = document.getElementById('interview-grid');
-      try {
-        const res = await fetch('/.netlify/functions/get-interviews');
-        const data = await res.json();
-        
-        if (!data || data.length === 0) {
-          container.innerHTML = '<div class="card"><p>No interviews indexed yet. Check back soon — the archive updates automatically.</p></div>';
-          return;
-        }
-
-        container.innerHTML = data.map(item => `
-          <div class="card video-card">
-            <h2><a href="${item.url}" target="_blank">${item.title}</a></h2>
-            <div class="meta-info">Hosted by <strong>${item.host}</strong> • Published ${item.date}</div>
-            <ul>
-              ${item.summary.map(point => `<li>${point}</li>`).join('')}
-            </ul>
-            <a href="${item.url}" target="_blank" class="watch-link">Watch Interview on YouTube →</a>
-          </div>
-        `).join('');
-      } catch (err) {
-        console.error(err);
-        container.innerHTML = '<div class="card"><p>Unable to load interviews at this time. Please try refreshing.</p></div>';
       }
     }
     loadInterviews();
