@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 exports.handler = async function(event, context) {
   const API_KEY = process.env.YOUTUBE_API_KEY;
   if (!API_KEY) {
@@ -9,9 +7,9 @@ exports.handler = async function(event, context) {
   try {
     let rawVideos = [];
     let nextPageToken = '';
-    const maxPages = 3; // Fetch initial candidates (up to 150)
+    const maxPages = 3; // 3 pages x 50 results = 150 potential videos
 
-    // 1. Fetch raw search results
+    // 1. Fetch raw search results using native Node fetch
     for (let page = 0; page < maxPages; page++) {
       const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=Martin+Armstrong+interview&type=video&maxResults=50&order=date&key=${API_KEY}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`;
       
@@ -34,15 +32,15 @@ exports.handler = async function(event, context) {
       };
     }
 
-    // 2. Extract video IDs to verify status
+    // 2. Extract video IDs to verify embeddability and status
     const videoIds = rawVideos.map(item => item.id.videoId).join(',');
 
-    // 3. Query YouTube Videos API to check status and embeddability
+    // 3. Query YouTube Videos API to verify active status
     const detailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=status,player&id=${videoIds}&key=${API_KEY}`;
     const detailsResponse = await fetch(detailsUrl);
     const detailsData = await detailsResponse.json();
 
-    // Map embeddability and status by Video ID
+    // Map valid, embeddable Video IDs
     const validVideoIds = new Set();
     if (detailsData.items) {
       detailsData.items.forEach(item => {
@@ -56,7 +54,7 @@ exports.handler = async function(event, context) {
       });
     }
 
-    // 4. Filter out any removed or non-embeddable videos
+    // 4. Filter out removed, private, or non-embeddable videos
     const activeVideos = rawVideos
       .filter(item => validVideoIds.has(item.id.videoId))
       .map(item => ({
