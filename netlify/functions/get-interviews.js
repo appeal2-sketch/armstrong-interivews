@@ -16,28 +16,33 @@ exports.handler = async function(event, context) {
   }
 
   try {
-    const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=Martin+Armstrong+interview&type=video&maxResults=20&order=date&key=${API_KEY}`;
+    const baseUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=Martin+Armstrong&type=video&order=date&maxResults=50&key=${API_KEY}`;
     
-    const response = await fetch(searchUrl);
-    const data = await response.json();
+    // 1. Fetch Page 1 (First 50 Results)
+    const res1 = await fetch(baseUrl);
+    const data1 = await res1.json();
 
-    if (data.error) {
+    if (data1.error) {
       return {
         statusCode: 200,
         headers,
-        body: JSON.stringify({ error: `YouTube API Error: ${data.error.message}` })
+        body: JSON.stringify({ error: `YouTube API Error: ${data1.error.message}` })
       };
     }
 
-    if (!data.items || data.items.length === 0) {
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify([])
-      };
+    let rawItems = data1.items || [];
+
+    // 2. Fetch Page 2 using nextPageToken (Next 50 Results)
+    if (data1.nextPageToken) {
+      const res2 = await fetch(`${baseUrl}&pageToken=${data1.nextPageToken}`);
+      const data2 = await res2.json();
+      if (data2.items) {
+        rawItems = rawItems.concat(data2.items);
+      }
     }
 
-    const videos = data.items
+    // 3. Format & Map 100 Total Results
+    const videos = rawItems
       .filter(item => item.id && item.id.videoId)
       .map(item => ({
         id: item.id.videoId,
