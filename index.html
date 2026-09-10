@@ -6,51 +6,35 @@
   <title>Armstrong Interviews — Martin Armstrong Media Archive</title>
   <style>
     * { box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f5f7; margin: 0; padding: 0; color: #1a202c; }
-    
-    /* Top Banner */
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f5f7; margin: 0; padding: 0; color: #1a202c; }
     .top-bar { background: #1b5e20; color: white; text-align: center; padding: 12px 15px; font-weight: bold; font-size: 0.95rem; }
     .top-bar a { color: #fff; text-decoration: underline; margin-left: 6px; }
-    
-    /* Header */
     header { background: #0a192f; color: white; text-align: center; padding: 35px 20px; }
     header h1 { margin: 0 0 10px 0; font-size: 2.2rem; }
     header p { margin: 0; color: #cbd5e1; font-size: 1.1rem; }
-
-    /* Main Container & Grid */
     .container { display: flex; gap: 25px; max-width: 1200px; margin: 30px auto; padding: 0 20px; }
     .main-content { flex: 3; min-width: 0; }
     .sidebar { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 20px; }
-
-    /* Cards */
     .card { background: white; border-radius: 8px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; }
-    
-    /* Lead Capture Card Styling */
     .lead-card { background: #0a192f; color: white; border-top: 4px solid #d4af37; }
     .lead-card h3 { color: #ffffff; margin-top: 0; margin-bottom: 10px; }
     .lead-card p { font-size: 0.9rem; line-height: 1.4; color: #cbd5e1; margin-bottom: 15px; }
     .lead-form input[type="email"] { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 4px; border: 1px solid #334155; font-size: 14px; background: #1e293b; color: white; }
     .lead-form input[type="email"]::placeholder { color: #94a3b8; }
-    .btn-submit { width: 100%; padding: 12px; background: #d4af37; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; color: #0a192f; font-size: 15px; transition: background 0.2s; }
-    .btn-submit:hover { background: #b89528; }
-
-    /* Book & Official Links */
+    .btn-submit { width: 100%; padding: 12px; background: #d4af37; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; color: #0a192f; font-size: 15px; }
     .btn-book { display: block; text-align: center; background: #d4af37; color: #0a192f; padding: 12px; text-decoration: none; font-weight: bold; border-radius: 4px; margin-top: 12px; }
     .official-links { list-style: none; padding: 0; margin: 0; }
     .official-links li { margin-bottom: 10px; }
     .official-links a { color: #0284c7; text-decoration: none; font-weight: 600; }
-    .official-links a:hover { text-decoration: underline; }
     .book-img { width: 100%; height: auto; border-radius: 6px; margin-bottom: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.12); }
-
-    /* Video Post Styling */
-    .video-card { margin-bottom: 20px; }
+    .video-card { margin-bottom: 25px; }
     .video-card h2 { margin-top: 0; font-size: 1.35rem; }
-    .video-card h2 a { color: #0a192f; text-decoration: none; }
-    .video-card h2 a:hover { color: #0284c7; }
     .meta-info { color: #64748b; font-size: 0.85rem; margin-bottom: 12px; }
     .video-card ul { padding-left: 20px; color: #334155; line-height: 1.5; font-size: 0.95rem; }
-    .watch-link { display: inline-block; margin-top: 10px; color: #1b5e20; font-weight: bold; text-decoration: none; }
-    .watch-link:hover { text-decoration: underline; }
+    
+    /* Responsive Responsive Video Embed Container */
+    .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 6px; margin-bottom: 15px; background: #000; }
+    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
     @media (max-width: 768px) {
       .container { flex-direction: column; }
@@ -60,23 +44,86 @@
 </head>
 <body>
 
-  <!-- TOP BANNER -->
   <div class="top-bar">
     💵 DOLLAR TIME MACHINE — See What a Dollar Was Really Worth 
     <a href="https://dollartimemachine.com" target="_blank">Free Inflation Calculator →</a>
   </div>
 
-  <!-- HEADER -->
   <header>
     <h1>Armstrong Interviews</h1>
     <p>An independent archive of Martin Armstrong video interviews & cycle projections</p>
   </header>
 
-  <!-- MAIN CONTAINER -->
   <div class="container">
-    
-    <!-- LEFT COLUMN: INTERVIEW FEED -->
     <main class="main-content" id="interview-grid">
+      <div class="card"><p>Loading interview archive...</p></div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="card lead-card">
+        <h3>⚡ Free Cycle Alerts</h3>
+        <p>Get new Martin Armstrong interview summaries & Economic Confidence Model updates sent straight to your inbox.</p>
+        <form class="lead-form" name="cycle-alerts" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="cycle-alerts" />
+          <input type="email" name="email" placeholder="Enter your email address" required />
+          <button type="submit" class="btn-submit">Subscribe Free</button>
+        </form>
+      </div>
+
+      <!-- BOOK CARD WITH HIGH-RES WORKING COVER -->
+      <div class="card">
+        <img src="https://m.media-amazon.com/images/I/71N1A4y0OFL._AC_UF1000,1000_QL80_.jpg" alt="The Armstrong Economic Code" class="book-img">
+        <h3 style="margin-top:0;">The Armstrong Economic Code</h3>
+        <p style="font-size:0.9em; color:#475569; line-height:1.4;">Martin Armstrong's cycles, decoded by Kerry Lutz. The theory behind these interviews explained.</p>
+        <a href="https://armstrongbook.com" target="_blank" class="btn-book">Get the Book →</a>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0;">Official Resources</h3>
+        <ul class="official-links">
+          <li>🌐 <a href="https://www.armstrongeconomics.com" target="_blank">Armstrong Economics</a></li>
+          <li>💻 <a href="https://ask-socrates.com" target="_blank">Socrates Market Platform</a></li>
+          <li>🎙️ <a href="https://financialsurvivalnetwork.com" target="_blank">Financial Survival Network</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    async function loadInterviews() {
+      const container = document.getElementById('interview-grid');
+      try {
+        const res = await fetch('/.netlify/functions/get-interviews');
+        const data = await res.json();
+        
+        if (!data || data.length === 0) {
+          container.innerHTML = '<div class="card"><p>No interviews indexed yet.</p></div>';
+          return;
+        }
+
+        container.innerHTML = data.map(item => `
+          <div class="card video-card">
+            <h2>${item.title}</h2>
+            <div class="meta-info">Hosted by <strong>${item.host}</strong> • Published ${item.date}</div>
+            
+            <!-- YOUTUBE VIDEO EMBED -->
+            <div class="video-container">
+              <iframe src="https://www.youtube.com/embed/${item.id}" allowfullscreen></iframe>
+            </div>
+
+            <ul>
+              ${item.summary.map(point => `<li>${point}</li>`).join('')}
+            </ul>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    loadInterviews();
+  </script>
+</body>
+</html>    <main class="main-content" id="interview-grid">
       <div class="card"><p>Loading interview archive...</p></div>
     </main>
 
