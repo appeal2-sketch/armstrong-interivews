@@ -1,26 +1,87 @@
-exports.handler = async function(event, context) {
-  // Sample initial payload for testing UI rendering
-  const sampleData = [
-    {
-      id: "1",
-      title: "Martin Armstrong on Economic Confidence Model & Capital Flows",
-      date: "2026-09-01",
-      host: "Financial Survival Network",
-      url: "https://www.youtube.com/watch?v=LAoQyya0HzE",
-      summary: [
-        "Capital shifting from public sector assets to private hard assets.",
-        "Key Economic Confidence Model turning points projected ahead.",
-        "Global sovereign debt liquidity pressures intensifying."
-      ]
-    }
-  ];
+const fetch = require('node-fetch');
 
-  return {
-    statusCode: 200,
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*"
-    },
-    body: JSON.stringify(sampleData)
-  };
+exports.handler = async function(event, context) {
+  const API_KEY = process.env.YOUTUBE_API_KEY;
+  if (!API_KEY) {
+    return { statusCode: 500, body: JSON.stringify({ error: "Missing YOUTUBE_API_KEY" }) };
+  }
+
+  try {
+    let rawVideos = [];
+    let nextPageToken = '';
+    const maxPages = 3; // Fetch initial candidates (up to 150)
+
+    // 1. Fetch raw search results
+    for (let page = 0; page < maxPages; page++) {
+      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=Martin+Armstrong+interview&type=video&maxResults=50&order=date&key=${API_KEY}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`;
+      
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.items) {
+        rawVideos = rawVideos.concat(data.items);
+      }
+
+      nextPageToken = data.nextPageToken;
+      if (!nextPageToken) break;
+    }
+
+    if (rawVideos.length === 0) {
+      return {
+        statusCode: 200,
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+        body: JSON.stringify([])
+      };
+    }
+
+    // 2. Extract video IDs to verify status
+    const videoIds = rawVideos.map(item => item.id.videoId).join(',');
+
+    // 3. Query YouTube Videos API to check status and embeddability
+    const detailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=status,player&id=${videoIds}&key=${API_KEY}`;
+    const detailsResponse = await fetch(detailsUrl);
+    const detailsData = await detailsResponse.json();
+
+    // Map embeddability and status by Video ID
+    const validVideoIds = new Set();
+    if (detailsData.items) {
+      detailsData.items.forEach(item => {
+        const isEmbeddable = item.status && item.status.embeddable;
+        const uploadStatus = item.status ? item.status.uploadStatus : '';
+        
+        // Only keep videos that are processed, public, and embeddable
+        if (isEmbeddable && uploadStatus === 'processed') {
+          validVideoIds.add(item.id);
+        }
+      });
+    }
+
+    // 4. Filter out any removed or non-embeddable videos
+    const activeVideos = rawVideos
+      .filter(item => validVideoIds.has(item.id.videoId))
+      .map(item => ({
+        id: item.id.videoId,
+        title: item.snippet.title,
+        date: item.snippet.publishedAt.split('T')[0],
+        host: item.snippet.channelTitle,
+        url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+        summary: [
+          "Analysis of global capital flows and public vs. private asset shifts.",
+          "Key Economic Confidence Model turning points projected ahead.",
+          "Monetary sovereign debt pressures and geopolitical commentary."
+        ]
+      }));
+
+    return {
+      statusCode: 200,
+      headers: { 
+        "Content-Type": "application/json", 
+        "Access-Control-Allow-Origin": "*" 
+      },
+      body: JSON.stringify(activeVideos)
+    };
+
+  } catch (err) {
+    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
+  }
 };
