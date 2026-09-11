@@ -2,9 +2,8 @@ name: Fetch Latest Videos & Sync RSS
 
 on:
   schedule:
-    # Runs automatically every 6 hours
     - cron: '0 */6 * * *'
-  workflow_dispatch: # Enables manual trigger from the GitHub Actions UI
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -13,19 +12,16 @@ jobs:
   update-cache:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Grants GitHub Actions write permissions to commit updated files
+      contents: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/node-setup@v4
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
+          node-version: '20'
 
       - name: Run Fetch Script
         env:
@@ -37,24 +33,4 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add videos.json feed.xml
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update video archive and RSS feed [skip ci]" && git push)      <guid>${v.id}</guid>
-      <pubDate>${new Date(v.date).toUTCString()}</pubDate>
-      <description><![CDATA[Watch the latest interview featuring Martin Armstrong on ${v.host}.]]></description>
-    </item>
-  `).join('');
-
-  const rssXml = `<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0">
-  <channel>
-    <title>Armstrong Interviews Archive</title>
-    <link>https://armstronginterviews.com</link>
-    <description>Latest Martin Armstrong video interviews and Economic Confidence Model cycle updates.</description>
-    ${rssItems}
-  </channel>
-</rss>`;
-
-  fs.writeFileSync(xmlPath, rssXml);
-  console.log("Successfully generated feed.xml!");
-}
-
-fetchLatestVideos();
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update video archive and RSS feed [skip ci]" && git push)
