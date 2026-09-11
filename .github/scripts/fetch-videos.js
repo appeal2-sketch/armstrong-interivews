@@ -112,6 +112,41 @@ function generateRSSFeed(videos) {
   console.log("Successfully generated feed.xml!");
 }
 
+fetchLatestVideos();    generateRSSFeed(existingVideos);
+
+  } catch (err) {
+    console.error("Execution error:", err);
+    process.exit(1);
+  }
+}
+
+function generateRSSFeed(videos) {
+  const latestTen = videos.slice(0, 10);
+
+  const rssItems = latestTen.map(v => `
+    <item>
+      <title><![CDATA[${v.title}]]></title>
+      <link>${v.url}</link>
+      <guid>${v.id}</guid>
+      <pubDate>${new Date(v.date).toUTCString()}</pubDate>
+      <description><![CDATA[Watch the latest interview featuring Martin Armstrong on ${v.host}.]]></description>
+    </item>
+  `).join('');
+
+  const rssXml = `<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>Armstrong Interviews Archive</title>
+    <link>https://armstronginterviews.com</link>
+    <description>Latest Martin Armstrong video interviews and Economic Confidence Model cycle updates.</description>
+    ${rssItems}
+  </channel>
+</rss>`;
+
+  fs.writeFileSync(xmlPath, rssXml);
+  console.log("Successfully generated feed.xml!");
+}
+
 fetchLatestVideos();  const latestTen = videos.slice(0, 10);
 
   const rssItems = latestTen.map(v => `
