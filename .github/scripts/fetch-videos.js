@@ -26,7 +26,7 @@ function makeRequest(url) {
 
 async function fetchLatestVideos() {
   if (!API_KEY) {
-    console.error("Missing YOUTUBE_API_KEY environment variable.");
+    console.error("FATAL: YOUTUBE_API_KEY is not defined in GitHub Repository Secrets.");
     process.exit(1);
   }
 
@@ -35,12 +35,17 @@ async function fetchLatestVideos() {
   try {
     const data = await makeRequest(url);
 
+    if (data.error) {
+      console.error("YouTube API Error Details:", JSON.stringify(data.error, null, 2));
+      process.exit(1);
+    }
+
     let existingVideos = [];
     if (fs.existsSync(jsonPath)) {
       try {
         existingVideos = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
       } catch (e) {
-        console.warn("Could not parse existing videos.json, starting fresh.");
+        console.warn("Existing videos.json was invalid, initializing empty list.");
       }
     }
 
@@ -64,8 +69,12 @@ async function fetchLatestVideos() {
       if (newEntries.length > 0) {
         existingVideos = [...newEntries, ...existingVideos];
         fs.writeFileSync(jsonPath, JSON.stringify(existingVideos, null, 2));
-        console.log(`Added ${newEntries.length} new videos to videos.json!`);
+        console.log(`Successfully added ${newEntries.length} new videos.`);
+      } else {
+        console.log("No new videos found. Cache is up to date.");
       }
+    } else {
+      console.log("No items returned from query.");
     }
 
     generateRSSFeed(existingVideos);
@@ -78,6 +87,32 @@ async function fetchLatestVideos() {
 
 function generateRSSFeed(videos) {
   const latestTen = videos.slice(0, 10);
+
+  const rssItems = latestTen.map(v => `
+    <item>
+      <title><![CDATA[${v.title}]]></title>
+      <link>${v.url}</link>
+      <guid>${v.id}</guid>
+      <pubDate>${new Date(v.date).toUTCString()}</pubDate>
+      <description><![CDATA[Watch the latest interview featuring Martin Armstrong on ${v.host}.]]></description>
+    </item>
+  `).join('');
+
+  const rssXml = `<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>Armstrong Interviews Archive</title>
+    <link>https://armstronginterviews.com</link>
+    <description>Latest Martin Armstrong video interviews and Economic Confidence Model cycle updates.</description>
+    ${rssItems}
+  </channel>
+</rss>`;
+
+  fs.writeFileSync(xmlPath, rssXml);
+  console.log("Successfully generated feed.xml!");
+}
+
+fetchLatestVideos();  const latestTen = videos.slice(0, 10);
 
   const rssItems = latestTen.map(v => `
     <item>
