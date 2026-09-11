@@ -13,8 +13,8 @@
     header p { color: #bdc3c7; font-size: 1rem; max-width: 600px; margin: 0 auto; }
     
     /* Navigation Links Bar */
-    .nav-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.2rem; flex-wrap: wrap; }
-    .nav-links a { color: #3498db; text-decoration: none; font-weight: bold; font-size: 0.95rem; background: rgba(255,255,255,0.05); padding: 0.4rem 0.8rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s ease; }
+    .nav-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1.2rem; flex-wrap: wrap; }
+    .nav-links a { color: #3498db; text-decoration: none; font-weight: bold; font-size: 0.9rem; background: rgba(255,255,255,0.05); padding: 0.4rem 0.8rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s ease; }
     .nav-links a:hover { background: #3498db; color: #fff; }
 
     /* Lead Capture Section */
@@ -33,15 +33,42 @@
     main { flex: 3; }
     aside { flex: 1; }
 
-    /* Book Cards Sidebar */
+    /* Sidebar Widgets */
     .sidebar-widget { background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-align: center; margin-bottom: 1.5rem; border-top: 4px solid #3498db; }
-    .sidebar-widget img { max-width: 180px; height: auto; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-bottom: 1rem; transition: transform 0.2s ease; }
-    .sidebar-widget img:hover { transform: scale(1.03); }
+    
+    .cover-graphics {
+      width: 180px;
+      height: 240px;
+      margin: 0 auto 1rem auto;
+      border-radius: 6px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+    .cover-graphics:hover { transform: scale(1.03); }
+    
+    .book-cover-bg { background: linear-gradient(135deg, #111827 0%, #1f2937 100%); border-left: 4px solid #f39c12; color: #fff; }
+    .dtm-cover-bg { background: linear-gradient(135deg, #0f172a 0%, #0284c7 100%); border-left: 4px solid #38bdf8; color: #fff; }
+
+    .cover-title { font-size: 1.1rem; font-weight: bold; line-height: 1.2; margin-bottom: 0.4rem; }
+    .cover-title-gold { color: #f39c12; }
+    .cover-title-cyan { color: #38bdf8; }
+    .cover-subtitle { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; }
+
     .sidebar-widget h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #1a252f; }
     .sidebar-widget p { font-size: 0.88rem; color: #666; margin-bottom: 1rem; }
     
-    .btn-action { display: inline-block; background: #3498db; color: #fff; text-decoration: none; padding: 0.6rem 1.2rem; border-radius: 4px; font-weight: bold; transition: background 0.2s ease; width: 100%; }
+    .btn-action { display: inline-block; background: #3498db; color: #fff; text-decoration: none; padding: 0.65rem 1.2rem; border-radius: 4px; font-weight: bold; transition: background 0.2s ease; width: 100%; }
     .btn-action:hover { background: #2980b9; }
+    .btn-book { background: #e67e22; }
+    .btn-book:hover { background: #d35400; }
+    .btn-dtm { background: #0284c7; }
+    .btn-dtm:hover { background: #0369a1; }
     .btn-socrates { background: #8e44ad; }
     .btn-socrates:hover { background: #71368a; }
 
@@ -64,9 +91,9 @@
     <p>Automated archive of video appearances, cycle forecasts, and financial updates.</p>
     
     <div class="nav-links">
+      <a href="https://armstrongbook.com/" target="_blank" rel="noopener noreferrer">📖 ArmstrongBook.com</a>
       <a href="https://www.armstrongeconomics.com" target="_blank" rel="noopener noreferrer">🌐 Armstrong Economics</a>
       <a href="https://askpinnacle.com" target="_blank" rel="noopener noreferrer">🏛️ Socrates Platform</a>
-      <a href="https://www.armstrongeconomics.com/armstrong-store/" target="_blank" rel="noopener noreferrer">📚 AEC Store</a>
     </div>
   </header>
 
@@ -90,20 +117,36 @@
     </main>
 
     <aside>
-      <!-- Dollar Time Machine Widget -->
+      <!-- WIDGET 1: Armstrong Book -->
       <div class="sidebar-widget">
-        <a href="https://www.armstrongeconomics.com/armstrong-store/" target="_blank" rel="noopener noreferrer">
-          <img src="https://placehold.co/300x420/1a252f/ffffff?text=The+Dollar+Time+Machine" alt="The Dollar Time Machine by Martin Armstrong" />
+        <a href="https://armstrongbook.com/" target="_blank" rel="noopener noreferrer" class="cover-graphics book-cover-bg">
+          <div class="cover-subtitle">The Armstrong</div>
+          <div class="cover-title cover-title-gold">Economic Code</div>
+          <div class="cover-subtitle" style="margin-top: 8px;">Hardcover Book</div>
         </a>
-        <h3>The Dollar Time Machine</h3>
-        <p>Discover Martin Armstrong's economic model on monetary cycles and the historical evolution of currency.</p>
-        <a href="https://www.armstrongeconomics.com/armstrong-store/" target="_blank" rel="noopener noreferrer" class="btn-action">
-          Get the Book
+        <h3>The Armstrong Economic Code</h3>
+        <p>Discover Martin Armstrong's economic model on monetary cycles and capital shifts.</p>
+        <a href="https://armstrongbook.com/" target="_blank" rel="noopener noreferrer" class="btn-action btn-book">
+          Get the Book at ArmstrongBook.com
         </a>
       </div>
 
-      <!-- Socrates Widget -->
-      <div class="sidebar-widget">
+      <!-- WIDGET 2: Dollar Time Machine -->
+      <div class="sidebar-widget" style="border-top-color: #0284c7;">
+        <a href="https://dollartimemachine.com/" target="_blank" rel="noopener noreferrer" class="cover-graphics dtm-cover-bg">
+          <div class="cover-subtitle">Monetary Inflation</div>
+          <div class="cover-title cover-title-cyan">Dollar Time Machine</div>
+          <div class="cover-subtitle" style="margin-top: 8px;">Interactive Tool</div>
+        </a>
+        <h3>Dollar Time Machine</h3>
+        <p>Calculate the decay of purchasing power and track currency inflation models over time.</p>
+        <a href="https://dollartimemachine.com/" target="_blank" rel="noopener noreferrer" class="btn-action btn-dtm">
+          Visit DollarTimeMachine.com
+        </a>
+      </div>
+
+      <!-- WIDGET 3: Socrates -->
+      <div class="sidebar-widget" style="border-top-color: #8e44ad;">
         <h3>Socrates Platform</h3>
         <p>Access computer-generated market timing arrays, turn dates, and global capital flows.</p>
         <a href="https://askpinnacle.com" target="_blank" rel="noopener noreferrer" class="btn-action btn-socrates">
