@@ -1,16 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 
-// Target Search Config
+// Target Search Configuration
 const SEARCH_QUERY = 'Martin Armstrong interview';
 const API_KEY = process.env.YOUTUBE_API_KEY;
 
+// Output Paths (Writes directly to the root directory)
 const jsonPath = path.join(__dirname, '../../videos.json');
 const xmlPath = path.join(__dirname, '../../feed.xml');
 
 async function fetchLatestVideos() {
   if (!API_KEY) {
-    console.error("Missing YOUTUBE_API_KEY environment variable.");
+    console.error("Error: Missing YOUTUBE_API_KEY environment variable.");
     process.exit(1);
   }
 
@@ -20,54 +21,55 @@ async function fetchLatestVideos() {
     const response = await fetch(url);
     const data = await response.json();
 
-    if (!data.items) {
-      console.log("No videos returned or API quota exceeded.", data);
-      return;
-    }
-
-    // Read existing videos.json cache
+    // Read existing videos.json cache if present
     let existingVideos = [];
     if (fs.existsSync(jsonPath)) {
-      existingVideos = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-    }
-
-    const existingIds = new Set(existingVideos.map(v => v.id));
-    const newEntries = [];
-
-    data.items.forEach(item => {
-      const videoId = item.id.videoId;
-      if (!existingIds.has(videoId)) {
-        newEntries.push({
-          id: videoId,
-          title: item.snippet.title,
-          host: item.snippet.channelTitle,
-          date: new Date(item.snippet.publishedAt).toISOString().split('T')[0],
-          url: `https://www.youtube.com/watch?v=${videoId}`
-        });
+      try {
+        existingVideos = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+      } catch (e) {
+        console.warn("Could not parse existing videos.json, starting fresh.");
       }
-    });
-
-    if (newEntries.length === 0) {
-      console.log("No new videos found. Cache is up to date.");
-      return;
     }
 
-    // Append new entries to top of master list
-    const updatedVideos = [...newEntries, ...existingVideos];
+    if (data.items && data.items.length > 0) {
+      const existingIds = new Set(existingVideos.map(v => v.id));
+      const newEntries = [];
 
-    // Write updated videos.json
-    fs.writeFileSync(jsonPath, JSON.stringify(updatedVideos, null, 2));
-    console.log(`Successfully added ${newEntries.length} new videos to videos.json!`);
+      data.items.forEach(item => {
+        const videoId = item.id.videoId;
+        if (videoId && !existingIds.has(videoId)) {
+          newEntries.push({
+            id: videoId,
+            title: item.snippet.title,
+            host: item.snippet.channelTitle,
+            date: new Date(item.snippet.publishedAt).toISOString().split('T')[0],
+            url: `https://www.youtube.com/watch?v=${videoId}`
+          });
+        }
+      });
 
-    // Generate feed.xml for Mailchimp
-    generateRSSFeed(updatedVideos);
+      if (newEntries.length > 0) {
+        existingVideos = [...newEntries, ...existingVideos];
+        fs.writeFileSync(jsonPath, JSON.stringify(existingVideos, null, 2));
+        console.log(`Successfully added ${newEntries.length} new video(s) to videos.json!`);
+      } else {
+        console.log("No new videos found. Cache is up to date.");
+      }
+    } else {
+      console.log("No videos returned from YouTube API or quota limit hit.", data);
+    }
+
+    // ALWAYS generate feed.xml regardless of whether new entries were added
+    generateRSSFeed(existingVideos);
 
   } catch (err) {
     console.error("Error executing YouTube fetch script:", err);
+    process.exit(1);
   }
 }
 
 function generateRSSFeed(videos) {
+  // Grab top 10 videos for the RSS feed
   const latestTen = videos.slice(0, 10);
 
   const rssItems = latestTen.map(v => `
@@ -91,46 +93,7 @@ function generateRSSFeed(videos) {
 </rss>`;
 
   fs.writeFileSync(xmlPath, rssXml);
-  console.log("Successfully generated feed.xml for Mailchimp!");
+  console.log("Successfully generated feed.xml!");
 }
 
-fetchLatestVideos();name: Fetch Latest Videos & Sync RSS
-
-on:
-  schedule:
-    # Runs every 6 hours automatically
-    - cron: '0 */6 * * *'
-  workflow_dispatch: # Allows manual trigger from GitHub Actions UI
-  push:
-    branches:
-      - main
-
-jobs:
-  update-cache:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write # Grants GitHub Actions write access to update videos.json and feed.xml
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/node-setup@v4
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Fetch Script
-        env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-        run: node .github/scripts/fetch-videos.js
-
-      - name: Commit and Push Changes
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add videos.json feed.xml
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update video archive and RSS feed [skip ci]" && git push)
+fetchLatestVideos();
