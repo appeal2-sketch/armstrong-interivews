@@ -30,7 +30,7 @@ async function fetchLatestVideos() {
     process.exit(1);
   }
 
-  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(SEARCH_QUERY)}&type=video&order=date&maxResults=15&key=${API_KEY}`;
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(SEARCH_QUERY)}&type=video&order=date&maxResults=30&key=${API_KEY}`;
 
   try {
     const data = await makeRequest(url);
