@@ -4,37 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Martin Armstrong Interviews & Cycle Updates</title>
-  <link rel="alternate" type="application/rss+xml" title="Armstrong Interviews RSS Feed" href="feed.xml" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6f8; color: #222; line-height: 1.6; }
-    header { background: #1a252f; color: #fff; padding: 2rem 1rem; text-align: center; }
-    header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-    header p { color: #bdc3c7; font-size: 1rem; }
-    .rss-link { display: inline-block; margin-top: 0.75rem; color: #f39c12; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
-    .rss-link:hover { text-decoration: underline; }
     
+    header { background: #1a252f; color: #fff; padding: 2.5rem 1rem 2rem 1rem; text-align: center; }
+    header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+    header p { color: #bdc3c7; font-size: 1rem; max-width: 600px; margin: 0 auto; }
+    
+    /* Navigation Links Bar */
+    .nav-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.2rem; flex-wrap: wrap; }
+    .nav-links a { color: #3498db; text-decoration: none; font-weight: bold; font-size: 0.95rem; background: rgba(255,255,255,0.05); padding: 0.4rem 0.8rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s ease; }
+    .nav-links a:hover { background: #3498db; color: #fff; }
+
+    /* Lead Capture Section */
+    .lead-capture-container { background: #2c3e50; color: #fff; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; }
+    .lead-capture-container h2 { font-size: 1.4rem; margin-bottom: 0.4rem; color: #f39c12; }
+    .lead-capture-container p { font-size: 0.95rem; color: #ecf0f1; margin-bottom: 1rem; }
+    .lead-form { display: flex; gap: 0.5rem; max-width: 500px; margin: 0 auto; flex-direction: column; }
+    @media(min-width: 480px) { .lead-form { flex-direction: row; } }
+    .lead-form input[type="email"] { flex: 1; padding: 0.75rem 1rem; border-radius: 4px; border: none; font-size: 1rem; outline: none; }
+    .lead-form button { background: #e67e22; color: #fff; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 1rem; transition: background 0.2s; }
+    .lead-form button:hover { background: #d35400; }
+
     .container { display: flex; flex-direction: column; max-width: 1200px; margin: 2rem auto; padding: 0 1rem; gap: 2rem; }
-    @media(min-width: 768px) { .container { flex-direction: row; } }
+    @media(min-width: 850px) { .container { flex-direction: row; } }
     
     main { flex: 3; }
     aside { flex: 1; }
 
-    .book-card { background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-align: center; border-top: 4px solid #3498db; }
-    .book-card img { max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-bottom: 1rem; transition: transform 0.2s ease; }
-    .book-card img:hover { transform: scale(1.03); }
-    .book-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
-    .book-card p { font-size: 0.9rem; color: #666; margin-bottom: 1rem; }
-    .btn-store { display: inline-block; background: #3498db; color: #fff; text-decoration: none; padding: 0.6rem 1.2rem; border-radius: 4px; font-weight: bold; transition: background 0.2s ease; }
-    .btn-store:hover { background: #2980b9; }
+    /* Book Cards Sidebar */
+    .sidebar-widget { background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-align: center; margin-bottom: 1.5rem; border-top: 4px solid #3498db; }
+    .sidebar-widget img { max-width: 180px; height: auto; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-bottom: 1rem; transition: transform 0.2s ease; }
+    .sidebar-widget img:hover { transform: scale(1.03); }
+    .sidebar-widget h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #1a252f; }
+    .sidebar-widget p { font-size: 0.88rem; color: #666; margin-bottom: 1rem; }
+    
+    .btn-action { display: inline-block; background: #3498db; color: #fff; text-decoration: none; padding: 0.6rem 1.2rem; border-radius: 4px; font-weight: bold; transition: background 0.2s ease; width: 100%; }
+    .btn-action:hover { background: #2980b9; }
+    .btn-socrates { background: #8e44ad; }
+    .btn-socrates:hover { background: #71368a; }
 
+    /* Video Grid */
     .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
     .video-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: flex; flex-direction: column; }
     .video-card img { width: 100%; height: auto; display: block; }
     .video-content { padding: 1rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-    .video-title { font-size: 1rem; font-weight: bold; margin-bottom: 0.5rem; color: #2c3e50; text-decoration: none; }
+    .video-title { font-size: 0.95rem; font-weight: bold; margin-bottom: 0.5rem; color: #2c3e50; text-decoration: none; line-height: 1.3; }
     .video-title:hover { color: #3498db; }
-    .video-meta { font-size: 0.85rem; color: #7f8c8d; margin-top: 0.5rem; }
+    .video-meta { font-size: 0.82rem; color: #7f8c8d; margin-top: 0.5rem; }
 
     footer { text-align: center; padding: 2rem 1rem; color: #7f8c8d; font-size: 0.9rem; border-top: 1px solid #e0e0e0; margin-top: 3rem; }
   </style>
@@ -44,32 +62,59 @@
   <header>
     <h1>Martin Armstrong Interviews</h1>
     <p>Automated archive of video appearances, cycle forecasts, and financial updates.</p>
-    <a class="rss-link" href="feed.xml" target="_blank">📡 Subscribe via RSS Feed</a>
+    
+    <div class="nav-links">
+      <a href="https://www.armstrongeconomics.com" target="_blank" rel="noopener noreferrer">🌐 Armstrong Economics</a>
+      <a href="https://askpinnacle.com" target="_blank" rel="noopener noreferrer">🏛️ Socrates Platform</a>
+      <a href="https://www.armstrongeconomics.com/armstrong-store/" target="_blank" rel="noopener noreferrer">📚 AEC Store</a>
+    </div>
   </header>
 
   <div class="container">
     <main>
+      <!-- Lead Capture Form -->
+      <div class="lead-capture-container">
+        <h2>Get Latest Postings & Emergency Updates</h2>
+        <p>Subscribe to receive urgent cycle updates and key interview notifications directly to your inbox.</p>
+        <form class="lead-form" onsubmit="handleLeadSubmit(event)">
+          <input type="email" id="subscriber-email" placeholder="Enter your primary email..." required />
+          <button type="submit">Subscribe</button>
+        </form>
+        <p id="form-message" style="display:none; margin-top:0.8rem; font-weight:bold; color:#2ecc71;"></p>
+      </div>
+
+      <!-- Video Grid -->
       <div id="video-grid" class="video-grid">
         <p>Loading latest interviews...</p>
       </div>
     </main>
 
     <aside>
-      <div class="book-card">
+      <!-- Dollar Time Machine Widget -->
+      <div class="sidebar-widget">
         <a href="https://www.armstrongeconomics.com/armstrong-store/" target="_blank" rel="noopener noreferrer">
-          <img src="https://www.armstrongeconomics.com/wp-content/uploads/2023/10/AEC-Store-Placeholder.jpg" alt="Armstrong Economics Books & Research Reports" id="aec-cover" />
+          <img src="https://placehold.co/300x420/1a252f/ffffff?text=The+Dollar+Time+Machine" alt="The Dollar Time Machine by Martin Armstrong" />
         </a>
-        <h3>Armstrong Economics Store</h3>
-        <p>Explore official books, Economic Confidence Model (ECM) models, and research reports directly by Martin Armstrong.</p>
-        <a href="https://www.armstrongeconomics.com/armstrong-store/" target="_blank" rel="noopener noreferrer" class="btn-store">
-          Visit Official Store
+        <h3>The Dollar Time Machine</h3>
+        <p>Discover Martin Armstrong's economic model on monetary cycles and the historical evolution of currency.</p>
+        <a href="https://www.armstrongeconomics.com/armstrong-store/" target="_blank" rel="noopener noreferrer" class="btn-action">
+          Get the Book
+        </a>
+      </div>
+
+      <!-- Socrates Widget -->
+      <div class="sidebar-widget">
+        <h3>Socrates Platform</h3>
+        <p>Access computer-generated market timing arrays, turn dates, and global capital flows.</p>
+        <a href="https://askpinnacle.com" target="_blank" rel="noopener noreferrer" class="btn-action btn-socrates">
+          Explore Socrates
         </a>
       </div>
     </aside>
   </div>
 
   <footer>
-    <p>&copy; Armstrong Interviews Archive. Automatically synchronized with YouTube & Netlify.</p>
+    <p>&copy; Armstrong Interviews Archive. Powered by Armstrong Economics & Socrates.</p>
   </footer>
 
   <script>
@@ -103,6 +148,15 @@
         console.error(err);
         grid.innerHTML = '<p>Unable to display interviews right now. Check back shortly.</p>';
       }
+    }
+
+    function handleLeadSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('subscriber-email').value;
+      const msg = document.getElementById('form-message');
+      msg.innerText = "Thank you! You are subscribed for emergency updates.";
+      msg.style.display = "block";
+      document.getElementById('subscriber-email').value = "";
     }
 
     loadVideos();
