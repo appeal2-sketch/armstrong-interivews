@@ -1,15 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 
+// Target Search Configuration
 const SEARCH_QUERY = 'Martin Armstrong interview';
 const API_KEY = process.env.YOUTUBE_API_KEY;
 
+// Output Paths (Writes directly to the root directory)
 const jsonPath = path.join(__dirname, '../../videos.json');
 const xmlPath = path.join(__dirname, '../../feed.xml');
 
 async function fetchLatestVideos() {
   if (!API_KEY) {
-    console.error("Missing YOUTUBE_API_KEY environment variable.");
+    console.error("Error: Missing YOUTUBE_API_KEY environment variable.");
     process.exit(1);
   }
 
@@ -19,10 +21,14 @@ async function fetchLatestVideos() {
     const response = await fetch(url);
     const data = await response.json();
 
-    // Read existing videos.json cache
+    // Read existing videos.json cache if present
     let existingVideos = [];
     if (fs.existsSync(jsonPath)) {
-      existingVideos = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+      try {
+        existingVideos = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+      } catch (e) {
+        console.warn("Could not parse existing videos.json, starting fresh.");
+      }
     }
 
     if (data.items && data.items.length > 0) {
@@ -45,8 +51,12 @@ async function fetchLatestVideos() {
       if (newEntries.length > 0) {
         existingVideos = [...newEntries, ...existingVideos];
         fs.writeFileSync(jsonPath, JSON.stringify(existingVideos, null, 2));
-        console.log(`Added ${newEntries.length} new videos to videos.json!`);
+        console.log(`Successfully added ${newEntries.length} new video(s) to videos.json!`);
+      } else {
+        console.log("No new videos found. Cache is up to date.");
       }
+    } else {
+      console.log("No videos returned from YouTube API or quota limit hit.", data);
     }
 
     // ALWAYS generate feed.xml regardless of whether new entries were added
@@ -54,10 +64,12 @@ async function fetchLatestVideos() {
 
   } catch (err) {
     console.error("Error executing YouTube fetch script:", err);
+    process.exit(1);
   }
 }
 
 function generateRSSFeed(videos) {
+  // Grab top 10 videos for the RSS feed
   const latestTen = videos.slice(0, 10);
 
   const rssItems = latestTen.map(v => `
@@ -78,6 +90,13 @@ function generateRSSFeed(videos) {
     <description>Latest Martin Armstrong video interviews and Economic Confidence Model cycle updates.</description>
     ${rssItems}
   </channel>
+</rss>`;
+
+  fs.writeFileSync(xmlPath, rssXml);
+  console.log("Successfully generated feed.xml!");
+}
+
+fetchLatestVideos();  </channel>
 </rss>`;
 
   fs.writeFileSync(xmlPath, rssXml);
