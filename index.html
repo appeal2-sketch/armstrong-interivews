@@ -20,26 +20,19 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6f8; color: #222; line-height: 1.6; }
 
-    /* Full-Width Red Hero Header Bar (ArmstrongBook Style) */
+    /* New Full-Width Lead Banner Header */
     .hero-banner-wrapper {
       width: 100%;
-      background: #8b0000; /* Deep Red Theme */
-      border-bottom: 2px solid #5a0000;
+      background: #1a252f;
+      text-align: center;
       overflow: hidden;
     }
-    .dtm-frame-container {
+    .hero-banner-img {
       width: 100%;
-      height: 180px; /* Scaled to fit full horizontal banner */
-      position: relative;
-    }
-    @media (max-width: 768px) {
-      .dtm-frame-container { height: 260px; } /* Expand height for mobile responsiveness */
-    }
-    .dtm-frame-container iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+      max-width: 1200px;
+      height: auto;
       display: block;
+      margin: 0 auto;
     }
 
     /* Sub-Header Navigation Links */
@@ -47,6 +40,7 @@
       background: #1a252f;
       padding: 0.8rem 1rem;
       text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
     .nav-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
     .nav-links a { color: #3498db; text-decoration: none; font-weight: bold; font-size: 0.9rem; background: rgba(255,255,255,0.05); padding: 0.4rem 0.8rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s ease; }
@@ -78,8 +72,6 @@
     .btn-action { display: inline-block; color: #fff; text-decoration: none; padding: 0.75rem 1.2rem; border-radius: 4px; font-weight: bold; transition: background 0.2s ease; width: 100%; }
     .btn-book { background: #e67e22; }
     .btn-book:hover { background: #d35400; }
-    .btn-dtm { background: #0284c7; }
-    .btn-dtm:hover { background: #0369a1; }
     .btn-socrates { background: #8e44ad; }
     .btn-socrates:hover { background: #71368a; }
 
@@ -97,18 +89,14 @@
 </head>
 <body>
 
-  <!-- Full Bleed Red Banner Header -->
+  <!-- Lead Banner Image Container (Updated to lead-banner.png) -->
   <header class="hero-banner-wrapper">
-    <div class="dtm-frame-container">
-      <iframe 
-        src="https://6aa0275f218ebb0008ffb3c8--dollar-time-machine.netlify.app/" 
-        title="Dollar Time Machine Header"
-        loading="eager">
-      </iframe>
-    </div>
+    <a href="https://armstrongbook.com/" target="_blank" rel="noopener noreferrer">
+      <img src="lead-banner.png" alt="Martin Armstrong Cycle Updates" class="hero-banner-img" onerror="this.src='lead-banner.jpg'" />
+    </a>
   </header>
 
-  <!-- Navigation Bar -->
+  <!-- Navigation Links -->
   <nav class="sub-nav">
     <div class="nav-links">
       <a href="https://armstrongbook.com/" target="_blank" rel="noopener noreferrer">📖 ArmstrongBook.com</a>
@@ -138,16 +126,7 @@
         </a>
       </div>
 
-      <!-- WIDGET 2: Dollar Time Machine -->
-      <div class="sidebar-widget" style="border-top-color: #0284c7;">
-        <h3>Dollar Time Machine</h3>
-        <p>Calculate the decay of purchasing power and track currency inflation models over time.</p>
-        <a href="https://dollartimemachine.com/" target="_blank" rel="noopener noreferrer" class="btn-action btn-dtm">
-          Visit DollarTimeMachine.com
-        </a>
-      </div>
-
-      <!-- WIDGET 3: Socrates Platform -->
+      <!-- WIDGET 2: Socrates Platform -->
       <div class="sidebar-widget" style="border-top-color: #8e44ad;">
         <h3>Socrates Platform</h3>
         <p>Access computer-generated market timing arrays, turn dates, and global capital flows.</p>
@@ -175,7 +154,7 @@
           return;
         }
 
-        // Sort videos chronologically (Newest First)
+        // Chronological sort: Newest first
         videos.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         grid.innerHTML = videos.map(video => `
