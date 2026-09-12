@@ -33,11 +33,23 @@
     main { flex: 3; }
     aside { flex: 1; }
 
-    /* Sidebar Clean Cards */
+    /* Sidebar Widgets & Book Cover */
     .sidebar-widget { background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-align: center; margin-bottom: 1.5rem; border-top: 4px solid #3498db; }
     .sidebar-widget h3 { font-size: 1.25rem; margin-bottom: 0.6rem; color: #1a252f; }
     .sidebar-widget p { font-size: 0.9rem; color: #555; margin-bottom: 1.2rem; line-height: 1.5; }
     
+    .book-cover-img {
+      width: 180px;
+      height: auto;
+      max-height: 260px;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      margin: 0 auto 1rem auto;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+    .book-cover-img:hover { transform: scale(1.03); }
+
     .btn-action { display: inline-block; color: #fff; text-decoration: none; padding: 0.75rem 1.2rem; border-radius: 4px; font-weight: bold; transition: background 0.2s ease; width: 100%; }
     .btn-book { background: #e67e22; }
     .btn-book:hover { background: #d35400; }
@@ -67,7 +79,7 @@
     <div class="nav-links">
       <a href="https://armstrongbook.com/" target="_blank" rel="noopener noreferrer">📖 ArmstrongBook.com</a>
       <a href="https://www.armstrongeconomics.com" target="_blank" rel="noopener noreferrer">🌐 Armstrong Economics</a>
-      <a href="https://askpinnacle.com" target="_blank" rel="noopener noreferrer">🏛️ Socrates Platform</a>
+      <a href="https://www.socratesplatform.com/" target="_blank" rel="noopener noreferrer">🏛️ Socrates Platform</a>
     </div>
   </header>
 
@@ -91,8 +103,11 @@
     </main>
 
     <aside>
-      <!-- WIDGET 1: Armstrong Book -->
+      <!-- WIDGET 1: Armstrong Book (using cover.png) -->
       <div class="sidebar-widget" style="border-top-color: #e67e22;">
+        <a href="https://armstrongbook.com/" target="_blank" rel="noopener noreferrer">
+          <img src="cover.png" alt="The Armstrong Economic Code" class="book-cover-img" onerror="this.src='cover.jpg'" />
+        </a>
         <h3>The Armstrong Economic Code</h3>
         <p>Discover Martin Armstrong's economic model on monetary cycles, purchasing power, and capital shifts.</p>
         <a href="https://armstrongbook.com/" target="_blank" rel="noopener noreferrer" class="btn-action btn-book">
@@ -109,11 +124,11 @@
         </a>
       </div>
 
-      <!-- WIDGET 3: Socrates -->
+      <!-- WIDGET 3: Socrates Platform -->
       <div class="sidebar-widget" style="border-top-color: #8e44ad;">
         <h3>Socrates Platform</h3>
         <p>Access computer-generated market timing arrays, turn dates, and global capital flows.</p>
-        <a href="https://askpinnacle.com" target="_blank" rel="noopener noreferrer" class="btn-action btn-socrates">
+        <a href="https://www.socratesplatform.com/" target="_blank" rel="noopener noreferrer" class="btn-action btn-socrates">
           Explore Socrates
         </a>
       </div>
