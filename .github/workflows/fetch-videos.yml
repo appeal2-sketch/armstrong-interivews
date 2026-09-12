@@ -2,8 +2,8 @@ name: Fetch Latest Videos
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # Runs automatically every 6 hours
-  workflow_dispatch: # Allows manual trigger from the Actions tab
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
 jobs:
   update-cache:
@@ -16,14 +16,16 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: 22
 
       - name: Install dependencies
         run: |
           if [ -f package.json ]; then npm install; fi
 
       - name: Run video fetch script
-        run: node fetch-videos.js # Executes your cache update script
+        run: |
+          if [ -f fetch-videos.js ]; then node fetch-videos.js; fi
+          if [ -f fetch_videos.py ]; then python fetch_videos.py; fi
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
 
