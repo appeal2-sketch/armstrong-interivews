@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Martin Armstrong Interviews & Cycle Updates</title>
+
+  <!-- Favicon & Touch Icon Links -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="apple-touch-icon" href="thumbnail.jpg">
+
+  <!-- Open Graph & Twitter Social Card Meta Tags -->
+  <meta property="og:title" content="Martin Armstrong Interviews & Cycle Updates">
+  <meta property="og:description" content="Automated archive of Martin Armstrong's video appearances, cycle forecasts, and financial updates.">
+  <meta property="og:image" content="thumbnail.jpg">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Martin Armstrong Interviews & Cycle Updates">
+  <meta name="twitter:description" content="Automated archive of Martin Armstrong's video appearances, cycle forecasts, and financial updates.">
+  <meta name="twitter:image" content="thumbnail.jpg">
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6f8; color: #222; line-height: 1.6; }
@@ -12,33 +29,32 @@
     header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
     header p { color: #bdc3c7; font-size: 1rem; max-width: 600px; margin: 0 auto; }
     
-    /* Navigation Links Bar */
+    /* Top Navigation Bar */
     .nav-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1.2rem; flex-wrap: wrap; }
     .nav-links a { color: #3498db; text-decoration: none; font-weight: bold; font-size: 0.9rem; background: rgba(255,255,255,0.05); padding: 0.4rem 0.8rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s ease; }
     .nav-links a:hover { background: #3498db; color: #fff; }
 
-    /* Hero Banner: Dollar Time Machine Interactive Box */
-    .dtm-hero-banner {
-      background: linear-gradient(135deg, #0f172a 0%, #0284c7 100%);
-      color: #fff;
+    /* Horizontal Hero Section: Dollar Time Machine Embed */
+    .dtm-horizontal-wrapper {
       max-width: 1200px;
       margin: 1.5rem auto 0 auto;
+      background: #0f172a;
       border-radius: 8px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-      border: 1px solid #38bdf8;
+      border: 1px solid #0284c7;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+      overflow: hidden;
     }
-    .dtm-hero-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
-    .dtm-hero-title { font-size: 1.25rem; font-weight: bold; color: #38bdf8; display: flex; align-items: center; gap: 0.5rem; }
-    .dtm-link-btn { color: #fff; background: rgba(255,255,255,0.15); text-decoration: none; padding: 0.35rem 0.8rem; border-radius: 4px; font-size: 0.85rem; font-weight: bold; border: 1px solid rgba(255,255,255,0.3); transition: background 0.2s; }
-    .dtm-link-btn:hover { background: #0284c7; border-color: #38bdf8; }
-    
-    .dtm-calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; background: rgba(0,0,0,0.25); padding: 1rem; border-radius: 6px; align-items: end; }
-    .dtm-input-group { display: flex; flex-direction: column; gap: 0.3rem; }
-    .dtm-input-group label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: #93c5fd; }
-    .dtm-input-group input, .dtm-input-group select { padding: 0.5rem; border-radius: 4px; border: 1px solid #0284c7; background: #0f172a; color: #fff; font-size: 0.95rem; }
-    .dtm-result-box { background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; padding: 0.5rem; border-radius: 4px; text-align: center; }
-    .dtm-result-value { font-size: 1.2rem; font-weight: bold; color: #38bdf8; }
+    .dtm-frame-container {
+      width: 100%;
+      height: 220px;
+      position: relative;
+    }
+    .dtm-frame-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
 
     /* Lead Capture Section */
     .lead-capture-container { background: #2c3e50; color: #fff; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; }
@@ -105,40 +121,21 @@
       <a href="https://www.socratesplatform.com/" target="_blank" rel="noopener noreferrer">🏛️ Socrates Platform</a>
     </div>
 
-    <!-- Dollar Time Machine Banner (Directly under Martin's Name) -->
-    <div class="dtm-hero-banner">
-      <div class="dtm-hero-header">
-        <div class="dtm-hero-title">⏳ Dollar Time Machine — Inflation Calculator</div>
-        <a href="https://dollartimemachine.com/" target="_blank" rel="noopener noreferrer" class="dtm-link-btn">Visit DollarTimeMachine.com ↗</a>
-      </div>
-      <div class="dtm-calc-grid">
-        <div class="dtm-input-group">
-          <label>Starting Amount</label>
-          <input type="number" id="dtm-amount" value="100" oninput="calculateInflation()" />
-        </div>
-        <div class="dtm-input-group">
-          <label>From Year</label>
-          <select id="dtm-year" onchange="calculateInflation()">
-            <option value="1913">1913 (FED Created)</option>
-            <option value="1971" selected>1971 (Gold Standard Ended)</option>
-            <option value="1998">1998 (ECM Turn Date)</option>
-            <option value="2008">2008 (Financial Crisis)</option>
-            <option value="2020">2020 (Monetary Expansion)</option>
-          </select>
-        </div>
-        <div class="dtm-input-group">
-          <label>Purchasing Power Today</label>
-          <div class="dtm-result-box">
-            <div id="dtm-output" class="dtm-result-value">$11.80</div>
-          </div>
-        </div>
+    <!-- Horizontal Dollar Time Machine Hero Banner -->
+    <div class="dtm-horizontal-wrapper">
+      <div class="dtm-frame-container">
+        <iframe 
+          src="https://6aa0275f218ebb0008ffb3c8--dollar-time-machine.netlify.app/" 
+          title="Dollar Time Machine Calculator"
+          loading="lazy">
+        </iframe>
       </div>
     </div>
   </header>
 
   <div class="container">
     <main>
-      <!-- Lead Capture Form -->
+      <!-- Email Lead Capture Form -->
       <div class="lead-capture-container">
         <h2>Get Latest Postings & Emergency Updates</h2>
         <p>Subscribe to receive urgent cycle updates and key interview notifications directly to your inbox.</p>
@@ -149,14 +146,14 @@
         <p id="form-message" style="display:none; margin-top:0.8rem; font-weight:bold; color:#2ecc71;"></p>
       </div>
 
-      <!-- Video Grid -->
+      <!-- Video Grid Container -->
       <div id="video-grid" class="video-grid">
         <p>Loading latest interviews...</p>
       </div>
     </main>
 
     <aside>
-      <!-- WIDGET 1: Armstrong Book (with cover.png display) -->
+      <!-- WIDGET 1: Armstrong Book (Loads cover.png) -->
       <div class="sidebar-widget" style="border-top-color: #e67e22;">
         <a href="https://armstrongbook.com/" target="_blank" rel="noopener noreferrer">
           <img src="cover.png" alt="The Armstrong Economic Code" class="book-cover-img" onerror="this.src='cover.jpg'" />
@@ -168,7 +165,7 @@
         </a>
       </div>
 
-      <!-- WIDGET 2: Dollar Time Machine -->
+      <!-- WIDGET 2: Dollar Time Machine Link -->
       <div class="sidebar-widget" style="border-top-color: #0284c7;">
         <h3>Dollar Time Machine</h3>
         <p>Calculate the decay of purchasing power and track currency inflation models over time.</p>
@@ -177,7 +174,7 @@
         </a>
       </div>
 
-      <!-- WIDGET 3: Socrates Platform -->
+      <!-- WIDGET 3: Socrates Platform Link -->
       <div class="sidebar-widget" style="border-top-color: #8e44ad;">
         <h3>Socrates Platform</h3>
         <p>Access computer-generated market timing arrays, turn dates, and global capital flows.</p>
@@ -193,23 +190,6 @@
   </footer>
 
   <script>
-    // Inflation multipliers mapped to historic baseline years
-    const inflationRates = {
-      "1913": 0.03, // $100 in 1913 is ~$3 today
-      "1971": 0.118, // $100 in 1971 is ~$11.80 today
-      "1998": 0.52,  // $100 in 1998 is ~$52 today
-      "2008": 0.68,  // $100 in 2008 is ~$68 today
-      "2020": 0.82   // $100 in 2020 is ~$82 today
-    };
-
-    function calculateInflation() {
-      const amount = parseFloat(document.getElementById('dtm-amount').value) || 0;
-      const year = document.getElementById('dtm-year').value;
-      const rate = inflationRates[year] || 1;
-      const result = (amount * rate).toFixed(2);
-      document.getElementById('dtm-output').innerText = '$' + Number(result).toLocaleString('en-US', {minimumFractionDigits: 2});
-    }
-
     async function loadVideos() {
       const grid = document.getElementById('video-grid');
       try {
@@ -222,7 +202,7 @@
           return;
         }
 
-        // Sort videos chronologically (Newest First)
+        // Chronological sort: Newest videos at the top
         videos.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         grid.innerHTML = videos.map(video => `
