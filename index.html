@@ -33,38 +33,12 @@
     main { flex: 3; }
     aside { flex: 1; }
 
-    /* Sidebar Widgets */
+    /* Sidebar Clean Cards */
     .sidebar-widget { background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-align: center; margin-bottom: 1.5rem; border-top: 4px solid #3498db; }
+    .sidebar-widget h3 { font-size: 1.25rem; margin-bottom: 0.6rem; color: #1a252f; }
+    .sidebar-widget p { font-size: 0.9rem; color: #555; margin-bottom: 1.2rem; line-height: 1.5; }
     
-    .cover-graphics {
-      width: 180px;
-      height: 240px;
-      margin: 0 auto 1rem auto;
-      border-radius: 6px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 1rem;
-      text-decoration: none;
-      transition: transform 0.2s ease;
-    }
-    .cover-graphics:hover { transform: scale(1.03); }
-    
-    .book-cover-bg { background: linear-gradient(135deg, #111827 0%, #1f2937 100%); border-left: 4px solid #f39c12; color: #fff; }
-    .dtm-cover-bg { background: linear-gradient(135deg, #0f172a 0%, #0284c7 100%); border-left: 4px solid #38bdf8; color: #fff; }
-
-    .cover-title { font-size: 1.1rem; font-weight: bold; line-height: 1.2; margin-bottom: 0.4rem; }
-    .cover-title-gold { color: #f39c12; }
-    .cover-title-cyan { color: #38bdf8; }
-    .cover-subtitle { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; }
-
-    .sidebar-widget h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #1a252f; }
-    .sidebar-widget p { font-size: 0.88rem; color: #666; margin-bottom: 1rem; }
-    
-    .btn-action { display: inline-block; background: #3498db; color: #fff; text-decoration: none; padding: 0.65rem 1.2rem; border-radius: 4px; font-weight: bold; transition: background 0.2s ease; width: 100%; }
-    .btn-action:hover { background: #2980b9; }
+    .btn-action { display: inline-block; color: #fff; text-decoration: none; padding: 0.75rem 1.2rem; border-radius: 4px; font-weight: bold; transition: background 0.2s ease; width: 100%; }
     .btn-book { background: #e67e22; }
     .btn-book:hover { background: #d35400; }
     .btn-dtm { background: #0284c7; }
@@ -118,14 +92,9 @@
 
     <aside>
       <!-- WIDGET 1: Armstrong Book -->
-      <div class="sidebar-widget">
-        <a href="https://armstrongbook.com/" target="_blank" rel="noopener noreferrer" class="cover-graphics book-cover-bg">
-          <div class="cover-subtitle">The Armstrong</div>
-          <div class="cover-title cover-title-gold">Economic Code</div>
-          <div class="cover-subtitle" style="margin-top: 8px;">Hardcover Book</div>
-        </a>
+      <div class="sidebar-widget" style="border-top-color: #e67e22;">
         <h3>The Armstrong Economic Code</h3>
-        <p>Discover Martin Armstrong's economic model on monetary cycles and capital shifts.</p>
+        <p>Discover Martin Armstrong's economic model on monetary cycles, purchasing power, and capital shifts.</p>
         <a href="https://armstrongbook.com/" target="_blank" rel="noopener noreferrer" class="btn-action btn-book">
           Get the Book at ArmstrongBook.com
         </a>
@@ -133,11 +102,6 @@
 
       <!-- WIDGET 2: Dollar Time Machine -->
       <div class="sidebar-widget" style="border-top-color: #0284c7;">
-        <a href="https://dollartimemachine.com/" target="_blank" rel="noopener noreferrer" class="cover-graphics dtm-cover-bg">
-          <div class="cover-subtitle">Monetary Inflation</div>
-          <div class="cover-title cover-title-cyan">Dollar Time Machine</div>
-          <div class="cover-subtitle" style="margin-top: 8px;">Interactive Tool</div>
-        </a>
         <h3>Dollar Time Machine</h3>
         <p>Calculate the decay of purchasing power and track currency inflation models over time.</p>
         <a href="https://dollartimemachine.com/" target="_blank" rel="noopener noreferrer" class="btn-action btn-dtm">
@@ -166,12 +130,15 @@
       try {
         const response = await fetch('videos.json');
         if (!response.ok) throw new Error('Failed to load video cache');
-        const videos = await response.json();
+        let videos = await response.json();
 
         if (videos.length === 0) {
           grid.innerHTML = '<p>No interviews found in cache.</p>';
           return;
         }
+
+        // Sort videos chronologically (Newest First)
+        videos.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         grid.innerHTML = videos.map(video => `
           <div class="video-card">
