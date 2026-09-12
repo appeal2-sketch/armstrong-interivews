@@ -16,38 +16,24 @@
   <meta property="og:image" content="thumbnail.jpg">
   <meta property="og:type" content="website">
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Martin Armstrong Interviews & Cycle Updates">
-  <meta name="twitter:description" content="Automated archive of Martin Armstrong's video appearances, cycle forecasts, and financial updates.">
-  <meta name="twitter:image" content="thumbnail.jpg">
-
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6f8; color: #222; line-height: 1.6; }
-    
-    header { background: #1a252f; color: #fff; padding: 2.5rem 1rem 1.5rem 1rem; text-align: center; }
-    header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
-    header p { color: #bdc3c7; font-size: 1rem; max-width: 600px; margin: 0 auto; }
-    
-    /* Top Navigation Bar */
-    .nav-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1.2rem; flex-wrap: wrap; }
-    .nav-links a { color: #3498db; text-decoration: none; font-weight: bold; font-size: 0.9rem; background: rgba(255,255,255,0.05); padding: 0.4rem 0.8rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s ease; }
-    .nav-links a:hover { background: #3498db; color: #fff; }
 
-    /* Horizontal Hero Section: Dollar Time Machine Embed */
-    .dtm-horizontal-wrapper {
-      max-width: 1200px;
-      margin: 1.5rem auto 0 auto;
-      background: #0f172a;
-      border-radius: 8px;
-      border: 1px solid #0284c7;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    /* Full-Width Red Hero Header Bar (ArmstrongBook Style) */
+    .hero-banner-wrapper {
+      width: 100%;
+      background: #8b0000; /* Deep Red Theme */
+      border-bottom: 2px solid #5a0000;
       overflow: hidden;
     }
     .dtm-frame-container {
       width: 100%;
-      height: 220px;
+      height: 180px; /* Scaled to fit full horizontal banner */
       position: relative;
+    }
+    @media (max-width: 768px) {
+      .dtm-frame-container { height: 260px; } /* Expand height for mobile responsiveness */
     }
     .dtm-frame-container iframe {
       width: 100%;
@@ -56,15 +42,15 @@
       display: block;
     }
 
-    /* Lead Capture Section */
-    .lead-capture-container { background: #2c3e50; color: #fff; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; }
-    .lead-capture-container h2 { font-size: 1.4rem; margin-bottom: 0.4rem; color: #f39c12; }
-    .lead-capture-container p { font-size: 0.95rem; color: #ecf0f1; margin-bottom: 1rem; }
-    .lead-form { display: flex; gap: 0.5rem; max-width: 500px; margin: 0 auto; flex-direction: column; }
-    @media(min-width: 480px) { .lead-form { flex-direction: row; } }
-    .lead-form input[type="email"] { flex: 1; padding: 0.75rem 1rem; border-radius: 4px; border: none; font-size: 1rem; outline: none; }
-    .lead-form button { background: #e67e22; color: #fff; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 1rem; transition: background 0.2s; }
-    .lead-form button:hover { background: #d35400; }
+    /* Sub-Header Navigation Links */
+    .sub-nav {
+      background: #1a252f;
+      padding: 0.8rem 1rem;
+      text-align: center;
+    }
+    .nav-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .nav-links a { color: #3498db; text-decoration: none; font-weight: bold; font-size: 0.9rem; background: rgba(255,255,255,0.05); padding: 0.4rem 0.8rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s ease; }
+    .nav-links a:hover { background: #3498db; color: #fff; }
 
     .container { display: flex; flex-direction: column; max-width: 1200px; margin: 2rem auto; padding: 0 1rem; gap: 2rem; }
     @media(min-width: 850px) { .container { flex-direction: row; } }
@@ -111,41 +97,28 @@
 </head>
 <body>
 
-  <header>
-    <h1>Martin Armstrong Interviews</h1>
-    <p>Automated archive of video appearances, cycle forecasts, and financial updates.</p>
-    
+  <!-- Full Bleed Red Banner Header -->
+  <header class="hero-banner-wrapper">
+    <div class="dtm-frame-container">
+      <iframe 
+        src="https://6aa0275f218ebb0008ffb3c8--dollar-time-machine.netlify.app/" 
+        title="Dollar Time Machine Header"
+        loading="eager">
+      </iframe>
+    </div>
+  </header>
+
+  <!-- Navigation Bar -->
+  <nav class="sub-nav">
     <div class="nav-links">
       <a href="https://armstrongbook.com/" target="_blank" rel="noopener noreferrer">📖 ArmstrongBook.com</a>
       <a href="https://www.armstrongeconomics.com" target="_blank" rel="noopener noreferrer">🌐 Armstrong Economics</a>
       <a href="https://www.socratesplatform.com/" target="_blank" rel="noopener noreferrer">🏛️ Socrates Platform</a>
     </div>
-
-    <!-- Horizontal Dollar Time Machine Hero Banner -->
-    <div class="dtm-horizontal-wrapper">
-      <div class="dtm-frame-container">
-        <iframe 
-          src="https://6aa0275f218ebb0008ffb3c8--dollar-time-machine.netlify.app/" 
-          title="Dollar Time Machine Calculator"
-          loading="lazy">
-        </iframe>
-      </div>
-    </div>
-  </header>
+  </nav>
 
   <div class="container">
     <main>
-      <!-- Email Lead Capture Form -->
-      <div class="lead-capture-container">
-        <h2>Get Latest Postings & Emergency Updates</h2>
-        <p>Subscribe to receive urgent cycle updates and key interview notifications directly to your inbox.</p>
-        <form class="lead-form" onsubmit="handleLeadSubmit(event)">
-          <input type="email" id="subscriber-email" placeholder="Enter your primary email..." required />
-          <button type="submit">Subscribe</button>
-        </form>
-        <p id="form-message" style="display:none; margin-top:0.8rem; font-weight:bold; color:#2ecc71;"></p>
-      </div>
-
       <!-- Video Grid Container -->
       <div id="video-grid" class="video-grid">
         <p>Loading latest interviews...</p>
@@ -153,7 +126,7 @@
     </main>
 
     <aside>
-      <!-- WIDGET 1: Armstrong Book (Loads cover.png) -->
+      <!-- WIDGET 1: Armstrong Book (using cover.png) -->
       <div class="sidebar-widget" style="border-top-color: #e67e22;">
         <a href="https://armstrongbook.com/" target="_blank" rel="noopener noreferrer">
           <img src="cover.png" alt="The Armstrong Economic Code" class="book-cover-img" onerror="this.src='cover.jpg'" />
@@ -165,7 +138,7 @@
         </a>
       </div>
 
-      <!-- WIDGET 2: Dollar Time Machine Link -->
+      <!-- WIDGET 2: Dollar Time Machine -->
       <div class="sidebar-widget" style="border-top-color: #0284c7;">
         <h3>Dollar Time Machine</h3>
         <p>Calculate the decay of purchasing power and track currency inflation models over time.</p>
@@ -174,7 +147,7 @@
         </a>
       </div>
 
-      <!-- WIDGET 3: Socrates Platform Link -->
+      <!-- WIDGET 3: Socrates Platform -->
       <div class="sidebar-widget" style="border-top-color: #8e44ad;">
         <h3>Socrates Platform</h3>
         <p>Access computer-generated market timing arrays, turn dates, and global capital flows.</p>
@@ -202,7 +175,7 @@
           return;
         }
 
-        // Chronological sort: Newest videos at the top
+        // Sort videos chronologically (Newest First)
         videos.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         grid.innerHTML = videos.map(video => `
@@ -223,15 +196,6 @@
         console.error(err);
         grid.innerHTML = '<p>Unable to display interviews right now. Check back shortly.</p>';
       }
-    }
-
-    function handleLeadSubmit(e) {
-      e.preventDefault();
-      const email = document.getElementById('subscriber-email').value;
-      const msg = document.getElementById('form-message');
-      msg.innerText = "Thank you! You are subscribed for emergency updates.";
-      msg.style.display = "block";
-      document.getElementById('subscriber-email').value = "";
     }
 
     loadVideos();
