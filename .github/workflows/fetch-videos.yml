@@ -1,37 +1,50 @@
-name: Fetch Latest Videos
+const fs = require('fs');
+const path = require('path');
 
-on:
-  schedule:
-    - cron: '0 */6 * * *'
-  workflow_dispatch:
+const API_KEY = process.env.YOUTUBE_API_KEY;
+const SEARCH_QUERY = 'Martin Armstrong interview';
+const MAX_RESULTS = 25;
 
-jobs:
-  update-cache:
-    runs-on: ubuntu-latest
+async function fetchLatestVideos() {
+  if (!API_KEY) {
+    console.error('Error: YOUTUBE_API_KEY environment variable is missing.');
+    process.exit(1);
+  }
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  // Set order=date to force YouTube to return the absolute newest uploads first
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
+    SEARCH_QUERY
+  )}&type=video&order=date&maxResults=${MAX_RESULTS}&key=${API_KEY}`;
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
 
-      - name: Install dependencies
-        run: |
-          if [ -f package.json ]; then npm install; fi
+    if (!data.items) {
+      console.error('YouTube API Error or empty response:', data);
+      process.exit(1);
+    }
 
-      - name: Run video fetch script
-        run: |
-          if [ -f fetch-videos.js ]; then node fetch-videos.js; fi
-          if [ -f fetch_videos.py ]; then python fetch_videos.py; fi
-        env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+    const newVideos = data.items.map((item) => ({
+      id: item.id.videoId,
+      title: item.snippet.title,
+      channelTitle: item.snippet.channelTitle,
+      publishedAt: item.snippet.publishedAt,
+      thumbnail: item.snippet.thumbnails.high
+        ? item.snippet.thumbnails.high.url
+        : item.snippet.thumbnails.medium.url,
+      url: `https://www.youtube.com/watch?v=${item.id.videoId}`
+    }));
 
-      - name: Commit and push updated videos.json
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add videos.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update video cache [skip ci]" && git push)
+    const filePath = path.join(__dirname, 'videos.json');
+    
+    // Save fresh JSON array
+    fs.writeFileSync(filePath, JSON.stringify(newVideos, null, 2));
+    console.log(`Successfully updated videos.json with ${newVideos.length} latest videos.`);
+  } catch (error) {
+    console.error('Failed to fetch videos:', error);
+    process.exit(1);
+  }
+}
+
+fetchLatestVideos();
