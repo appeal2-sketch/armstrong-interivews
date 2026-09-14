@@ -1,50 +1,31 @@
-const fs = require('fs');
-const path = require('path');
+name: Update Video Cache
 
-const API_KEY = process.env.YOUTUBE_API_KEY;
-const SEARCH_QUERY = 'Martin Armstrong interview';
-const MAX_RESULTS = 25;
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
-async function fetchLatestVideos() {
-  if (!API_KEY) {
-    console.error('Error: YOUTUBE_API_KEY environment variable is missing.');
-    process.exit(1);
-  }
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
 
-  // Set order=date to force YouTube to return the absolute newest uploads first
-  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
-    SEARCH_QUERY
-  )}&type=video&order=date&maxResults=${MAX_RESULTS}&key=${API_KEY}`;
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
 
-    if (!data.items) {
-      console.error('YouTube API Error or empty response:', data);
-      process.exit(1);
-    }
+      - name: Run scraper script
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: node fetch-videos.js
 
-    const newVideos = data.items.map((item) => ({
-      id: item.id.videoId,
-      title: item.snippet.title,
-      channelTitle: item.snippet.channelTitle,
-      publishedAt: item.snippet.publishedAt,
-      thumbnail: item.snippet.thumbnails.high
-        ? item.snippet.thumbnails.high.url
-        : item.snippet.thumbnails.medium.url,
-      url: `https://www.youtube.com/watch?v=${item.id.videoId}`
-    }));
-
-    const filePath = path.join(__dirname, 'videos.json');
-    
-    // Save fresh JSON array
-    fs.writeFileSync(filePath, JSON.stringify(newVideos, null, 2));
-    console.log(`Successfully updated videos.json with ${newVideos.length} latest videos.`);
-  } catch (error) {
-    console.error('Failed to fetch videos:', error);
-    process.exit(1);
-  }
-}
-
-fetchLatestVideos();
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add videos.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update videos.json cache" && git push)
